@@ -15,10 +15,10 @@ class EmptyFileError(WrongStudentNameError):
 
 
 def count_students_points(name_source):
-    studentspoints = {}
+    students_points = {}
     source = open(name_source, "rt")
     line = source.readline()
-    if line == "":
+    if not line or line.isspace():
         raise EmptyFileError(name_source, "Error! Empty file.")
     else:
         while line != "":
@@ -27,14 +27,14 @@ def count_students_points(name_source):
             points = float(student[1])
             if not (name.replace(" ", "").isalpha() and isinstance(points, float)):
                 raise WrongLineError(line, "Error! Wrong line.")
-            elif name not in studentspoints.keys():
-                studentspoints.update({name: points})
-            else:
-                sumpoints = float(studentspoints.get(name))
-                sumpoints += points
-                studentspoints.update({name: sumpoints})
+            elif name not in students_points.keys():
+                students_points.update({name: points})
+            elif name in students_points.keys():
+                sum_points = float(students_points.get(name))
+                sum_points = points
+                students_points.update({name: sum_points})
             line = source.readline()
-        for name, points in studentspoints.items():
+        for name, points in students_points.items():
             print(name, points)
 
 
